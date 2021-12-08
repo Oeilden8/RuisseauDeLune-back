@@ -15,5 +15,7 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }], // Use our .prettierrc file as source
     'no-console': 1,
+    camelcase: 0,
   },
+  ignorePatterns: ['migrations/*'],
 };
