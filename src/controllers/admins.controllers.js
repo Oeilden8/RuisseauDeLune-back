@@ -27,7 +27,7 @@ const getOneAdminById = async (req, resp) => {
 
 const validateNewAdminData = async (req, resp, next) => {
   const { email, password } = req.body;
-  if (await Admins.emailAlreadyExists) {
+  if (await Admins.emailAlreadyExists(email)) {
     resp.status(401).send(`${email} est déjà utilisé par un Admin`);
   } else if (!Admins.verifyPasswordHash(password)) {
     resp.status(404).send("mot de passe invalide");
@@ -40,7 +40,6 @@ const createOneAdmin = async (req, resp, next) => {
   try {
     const [result] = await Admins.createOne(req.body);
     req.id = result.insertId;
-    resp.status(201).send("nouvel Admin créé");
     next();
   } catch (err) {
     resp.status(500).send(err.message);
@@ -48,7 +47,7 @@ const createOneAdmin = async (req, resp, next) => {
 };
 
 const deleteOneAdmin = async (req, resp) => {
-  const { id } = req.params.id;
+  const { id } = req.params;
   try {
     const [result] = await Admins.deleteOnebyId(id);
     if (result.affectedRows === 0) {
@@ -62,16 +61,16 @@ const deleteOneAdmin = async (req, resp) => {
 };
 
 // si email est différent de la db -> non valide, si le mdp est différent du password -> non valide
-const validateLogin = async (req, resp, next) => {
-  const { email, password } = req.body;
-  if (await !Admins.emailAlreadyExists) {
-    resp.status(500).send(`${email} n'est pas valide`);
-  } else if (await !Admins.verifyPassword(Admins.passwordHashing(password))) {
-    resp.status(400).send("mot de passe invalide");
-  } else {
-    next();
-  }
-};
+// const validateLogin = async (req, resp, next) => {
+//   const { email, password } = req.body;
+//   if (await !Admins.emailAlreadyExists) {
+//     resp.status(500).send(`${email} n'est pas valide`);
+//   } else if (await !Admins.verifyPassword(Admins.passwordHashing(password))) {
+//     resp.status(400).send("mot de passe invalide");
+//   } else {
+//     next();
+//   }
+// };
 
 module.exports = {
   getAllAdmins,
@@ -79,5 +78,4 @@ module.exports = {
   createOneAdmin,
   deleteOneAdmin,
   validateNewAdminData,
-  validateLogin,
 };
