@@ -1,8 +1,8 @@
 const mainRouter = require("express").Router();
-const usersRouter = require("./users.routes");
 const adminsRouter = require("./admins.routes");
+const newsRouter = require("./news.routes");
 
-mainRouter.use("/users", usersRouter);
 mainRouter.use("/admins", adminsRouter);
+newsRouter.use("/news", newsRouter);
 
 module.exports = mainRouter;

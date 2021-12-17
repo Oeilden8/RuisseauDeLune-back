@@ -1,4 +1,4 @@
-const User = require("./user.model");
+const News = require("./news.models");
 const Admins = require("./admins.models");
 
-module.exports = { User, Admins };
+module.exports = { News, Admins };

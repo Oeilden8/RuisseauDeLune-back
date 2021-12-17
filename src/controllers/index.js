@@ -1,3 +1,4 @@
 const adminsControllers = require("./admins.controllers");
+const newsControllers = require("./news.controllers");
 
-module.exports = { adminsControllers };
+module.exports = { adminsControllers, newsControllers };
