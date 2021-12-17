@@ -25,6 +25,11 @@ class News {
     const sql = "INSERT INTO news SET ?";
     return connection.promise().query(sql, [news]);
   }
+
+  static updateOne(newEvent) {
+    const sql = "UPDATE users SET ?";
+    return connection.promise().query(sql, [newEvent]);
+  }
 }
 
 module.exports = News;

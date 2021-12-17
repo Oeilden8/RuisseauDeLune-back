@@ -37,8 +37,9 @@ const validateNewAdminData = async (req, resp, next) => {
 };
 
 const createOneAdmin = async (req, resp, next) => {
+  const { email, password } = req.body;
   try {
-    const [result] = await Admins.createOne(req.body);
+    const [result] = await Admins.createOne({ email, password });
     req.id = result.insertId;
     next();
   } catch (err) {
