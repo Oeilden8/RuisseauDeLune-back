@@ -1,9 +1,11 @@
 /* Replace with your SQL commands */
-CREATE TABLE `events`(
+CREATE TABLE `news`(
     `id` INT NOT NULL AUTO_INCREMENT,
-    `type` VARCHAR (50) NOT NULL,
     `title` VARCHAR (100) NOT NULL,
-    `places` VARCHAR(150),
+    `actual_place` VARCHAR(50),
+    `date_first` DATE,
+    `date_last` DATE,
     `description` TEXT,
+    `assets_id` INT,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
