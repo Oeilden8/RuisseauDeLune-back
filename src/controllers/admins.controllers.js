@@ -25,15 +25,22 @@ const getOneAdminById = async (req, resp) => {
   }
 };
 
-// const validateAdminData = async (req, resp, next) => {
-//     const { email, password} = req.body;
-//     if (await Admins.emailAlreadyExists)
-// }
+const validateNewAdminData = async (req, resp, next) => {
+  const { email, password } = req.body;
+  if (await Admins.emailAlreadyExists) {
+    resp.status(401).send(`${email} est déjà utilisé par un Admin`);
+  } else if (!Admins.verifyPasswordHash(password)) {
+    resp.status(404).send("mot de passe invalide");
+  } else {
+    next();
+  }
+};
 
 const createOneAdmin = async (req, resp, next) => {
   try {
     const [result] = await Admins.createOne(req.body);
     req.id = result.insertId;
+    resp.status(201).send("nouvel Admin créé");
     next();
   } catch (err) {
     resp.status(500).send(err.message);
@@ -54,4 +61,23 @@ const deleteOneAdmin = async (req, resp) => {
   }
 };
 
-module.exports = { getAllAdmins, getOneAdminById, createOneAdmin, deleteOneAdmin };
+// si email est différent de la db -> non valide, si le mdp est différent du password -> non valide
+const validateLogin = async (req, resp, next) => {
+  const { email, password } = req.body;
+  if (await !Admins.emailAlreadyExists) {
+    resp.status(500).send(`${email} n'est pas valide`);
+  } else if (await !Admins.verifyPassword(Admins.passwordHashing(password))) {
+    resp.status(400).send("mot de passe invalide");
+  } else {
+    next();
+  }
+};
+
+module.exports = {
+  getAllAdmins,
+  getOneAdminById,
+  createOneAdmin,
+  deleteOneAdmin,
+  validateNewAdminData,
+  validateLogin,
+};

@@ -25,6 +25,12 @@ class Admins {
     return result.length > 0;
   }
 
+  // vérifie que le password est ok
+  static async verifyPassword(hashedPassword) {
+    const sql = "SELECT hashedPassword FROM admins WHERE email=?";
+    return connection.promise().query(sql, [hashedPassword]);
+  }
+
   // hash le password via argon2
   static async passwordHashing(password) {
     const hashedPassword = await argon2d.hash(password);
@@ -32,7 +38,7 @@ class Admins {
   }
 
   // verifié le hashing
-  static async verifyPassword(password, hashedPassword) {
+  static async verifyPasswordHash(password, hashedPassword) {
     const valid = await argon2d.verify(hashedPassword, password);
     return valid;
   }

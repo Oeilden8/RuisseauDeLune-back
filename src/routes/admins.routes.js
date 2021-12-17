@@ -7,7 +7,7 @@ const { adminsControllers } = require("../controllers");
 adminsRouter.get("/", adminsControllers.getAllAdmins);
 adminsRouter.get("/:id", adminsControllers.getOneAdminById);
 
-adminsRouter.post("/", adminsControllers.createOneAdmin, adminsControllers.getOneAdminById);
+adminsRouter.post("/", adminsControllers.validateNewAdminData, adminsControllers.createOneAdmin, adminsControllers.getOneAdminById);
 
 adminsRouter.delete("/:id", adminsControllers.deleteOneAdmin);
 
