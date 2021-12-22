@@ -2,7 +2,7 @@ const { News } = require("../models");
 
 const getAllNews = async (req, resp) => {
   try {
-    const [results] = await News.findMany();
+    const [results] = await News.orderNewsByDate();
     resp.json(results);
   } catch (err) {
     resp.status(500).send(err.message);
@@ -48,11 +48,15 @@ const verifyUpdateData = async (req, resp, next) => {
 
 const updateOneNewsById = async (req, resp, next) => {
   const { id } = req.params;
+  // on recupère les champs remplis ou non ds le body
   const { title, actual_place, date_first, date_last, description } = req.body;
+  // on crée une const vide pour stocker les valeurs
   const newEvent = {};
+  // si title est rempli, stocke le dans newEvent -> {title: xxx}
   if (title) {
     newEvent.title = title;
   }
+  // si actual_place est rempli... etc
   if (actual_place) {
     newEvent.actual_place = actual_place;
   }
@@ -67,6 +71,7 @@ const updateOneNewsById = async (req, resp, next) => {
   }
 
   try {
+    // on update la table avec l'objet newEvent : ca ne modifie que les champs remplis
     await News.updateOne(newEvent, parseInt(id, 10));
     next();
   } catch (err) {

@@ -6,7 +6,8 @@
   "scripts": {
     "create-db-migration": "db-migrate create $NAME --sql-file",
     "migrate-db": "db-migrate up",
-    "rollback-last-db-migration": "db-migrate down",
+    "down-db": "db-migrate down",
+    "reset-db": "db-migrate reset",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "npx eslint --fix *.js src tests *.js",
