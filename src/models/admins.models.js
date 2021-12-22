@@ -13,6 +13,11 @@ class Admins {
     return connection.promise().query(sql, [id]);
   }
 
+  static findOneAdminByEmail(email) {
+    const sql = "SELECT * FROM admins WHERE email=?";
+    return connection.promise().query(sql, [email]);
+  }
+
   static deleteOnebyId(id) {
     const sql = "DELETE FROM admins WHERE id=?";
     return connection.promise().query(sql, [id]);

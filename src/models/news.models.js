@@ -12,7 +12,7 @@ class News {
   }
 
   static orderNewsByDate() {
-    const sql = "SELECT * FROM news ORDER date_first ASC";
+    const sql = "SELECT * FROM news ORDER BY date_first ASC";
     return connection.promise().query(sql);
   }
 
