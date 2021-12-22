@@ -9,10 +9,10 @@ const createToken = (req, resp) => {
 };
 
 const verifyToken = (req, resp, next) => {
-  const { token } = req.cookie;
-  if (token) {
+  const { adminToken } = req.cookies;
+  if (adminToken) {
     // verify recupère decoded ou une erreur si token pas bon
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(adminToken, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         resp.status(403).send(err.message);
       } else {
