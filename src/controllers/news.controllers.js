@@ -1,6 +1,6 @@
 const { News } = require("../models");
 
-const getAllNews = async (res, resp) => {
+const getAllNews = async (req, resp) => {
   try {
     const [results] = await News.findMany();
     resp.json(results);
@@ -13,7 +13,7 @@ const getOneNewsById = async (req, resp) => {
   const id = req.params.id ? req.params.id : req.id;
   const statusCode = req.method === "POST" ? 201 : 200;
   try {
-    const [result] = await News.findOneAdminById(id);
+    const [result] = await News.findOneNewsById(id);
     if (result.length === 0) {
       resp.status(404).send(`Admin avec l'id ${id} non trouvé`);
     } else {
@@ -24,13 +24,21 @@ const getOneNewsById = async (req, resp) => {
   }
 };
 
+const createOneNews = async (req, resp, next) => {
+  const { title, actual_place, date_first, date_last, description } = req.body;
+  try {
+    const [result] = await News.createOne({ title, actual_place, date_first, date_last, description });
+    req.id = result.insertId;
+    next();
+  } catch (err) {
+    resp.status(500).send(err.message);
+  }
+};
+
 const verifyUpdateData = async (req, resp, next) => {
   const { id } = req.params;
-  const { title, actual_place, date_first, date_last, description } = req.body;
   if (Number.isNaN(parseInt(id, 10))) {
     resp.status(401).send("Id incorrecte");
-  } else if (!title || !actual_place || !date_first || !date_last || !description) {
-    resp.status(404).send("Vous devez remplir au moins un champ");
   } else if (!(await News.findOneNewsById(id))) {
     resp.status(404).send(`News avec l'id ${id} non trouvée`);
   } else {
@@ -44,13 +52,17 @@ const updateOneNewsById = async (req, resp, next) => {
   const newEvent = {};
   if (title) {
     newEvent.title = title;
-  } else if (actual_place) {
+  }
+  if (actual_place) {
     newEvent.actual_place = actual_place;
-  } else if (date_first) {
+  }
+  if (date_first) {
     newEvent.date_first = date_first;
-  } else if (date_last) {
+  }
+  if (date_last) {
     newEvent.date_last = date_last;
-  } else if (description) {
+  }
+  if (description) {
     newEvent.description = description;
   }
 
@@ -62,4 +74,18 @@ const updateOneNewsById = async (req, resp, next) => {
   }
 };
 
-module.exports = { getAllNews, getOneNewsById, verifyUpdateData, updateOneNewsById };
+const deleteOneNews = async (req, resp) => {
+  const { id } = req.params;
+  try {
+    const [result] = await News.deleteOneNewsById(id);
+    if (result.affectedrows === 0) {
+      resp.status(404).send(`News avec l'id ${id} non trouvée`);
+    } else {
+      resp.status(200).send(`News ${id} supprimée`);
+    }
+  } catch (err) {
+    resp.status(500).send(`erreur lors de la suppression de l'admin : ${err.message}`);
+  }
+};
+
+module.exports = { getAllNews, getOneNewsById, verifyUpdateData, updateOneNewsById, createOneNews, deleteOneNews };

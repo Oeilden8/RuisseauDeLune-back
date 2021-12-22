@@ -61,18 +61,6 @@ const deleteOneAdmin = async (req, resp) => {
   }
 };
 
-// si email est différent de la db -> non valide, si le mdp est différent du password -> non valide
-// const validateLogin = async (req, resp, next) => {
-//   const { email, password } = req.body;
-//   if (await !Admins.emailAlreadyExists) {
-//     resp.status(500).send(`${email} n'est pas valide`);
-//   } else if (await !Admins.verifyPassword(Admins.passwordHashing(password))) {
-//     resp.status(400).send("mot de passe invalide");
-//   } else {
-//     next();
-//   }
-// };
-
 module.exports = {
   getAllAdmins,
   getOneAdminById,

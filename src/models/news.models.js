@@ -27,7 +27,7 @@ class News {
   }
 
   static updateOne(newEvent) {
-    const sql = "UPDATE users SET ?";
+    const sql = "UPDATE news SET ?";
     return connection.promise().query(sql, [newEvent]);
   }
 }
