@@ -6,13 +6,8 @@ class Events {
     return connection.promise().query(sql);
   }
 
-  static findOneAdminById(id) {
+  static findOneEventById(id) {
     const sql = "SELECT * FROM events WHERE id=?";
-    return connection.promise().query(sql, [id]);
-  }
-
-  static deleteOneById(id) {
-    const sql = "DELETE FROM events WHERE id=?";
     return connection.promise().query(sql, [id]);
   }
 
@@ -21,9 +16,19 @@ class Events {
     return connection.promise().query(sql, [events]);
   }
 
-  static typicalChoice(events) {
+  static deleteOneById(id) {
+    const sql = "DELETE FROM events WHERE id=?";
+    return connection.promise().query(sql, [id]);
+  }
+
+  static typicalChoice(type) {
     const sql = "SELECT * FROM events WHERE type=?";
-    return connection.promise().query(sql, [events]);
+    return connection.promise().query(sql, [type]);
+  }
+
+  static updateOne(newEvent) {
+    const sql = "UPDATE events SET ?";
+    return connection.promise().query(sql, [newEvent]);
   }
 }
 
