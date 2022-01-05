@@ -13,7 +13,7 @@ const getOneContactById = async (req, res) => {
   const id = req.params.id ? req.params.id : req.id;
   const statusCode = req.method === "POST" ? 201 : 200;
   try {
-    const [result] = await Contact.findOneContactById(id);
+    const [result] = await Contact.findOneContactWithAssetById(id);
     if (result.lengh === 0) {
       res.status(404).send(`Contact avec l'id ${id} non trouvé`);
     } else {
@@ -62,6 +62,7 @@ const updateOneContactById = async (req, resp, next) => {
 };
 
 const createOneMoreContact = async (req, res, next) => {
+  // si image deja la, assets_id est recup via front
   const { firstname_lastname, email, phone, description, assets_id } = req.body;
   try {
     const [result] = await Contact.createOneContact({ firstname_lastname, email, phone, description, assets_id });

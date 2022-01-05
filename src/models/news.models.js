@@ -11,6 +11,11 @@ class News {
     return connection.promise().query(sql, [id]);
   }
 
+  static findOneNewsWithAssetById(id) {
+    const sql = "SELECT * FROM news INNER JOIN assets ON news.assets_id = assets.id WHERE news.id=?";
+    return connection.promise().query(sql, [id]);
+  }
+
   static orderNewsByDate() {
     const sql = "SELECT * FROM news ORDER BY date_first ASC";
     return connection.promise().query(sql);

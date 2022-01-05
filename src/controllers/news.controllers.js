@@ -13,9 +13,9 @@ const getOneNewsById = async (req, resp) => {
   const id = req.params.id ? req.params.id : req.id;
   const statusCode = req.method === "POST" ? 201 : 200;
   try {
-    const [result] = await News.findOneNewsById(id);
+    const [result] = await News.findOneNewsWithAssetById(id);
     if (result.length === 0) {
-      resp.status(404).send(`Admin avec l'id ${id} non trouvé`);
+      resp.status(404).send(`News avec l'id ${id} non trouvé`);
     } else {
       resp.status(statusCode).json(result[0]);
     }
@@ -25,9 +25,9 @@ const getOneNewsById = async (req, resp) => {
 };
 
 const createOneNews = async (req, resp, next) => {
-  const { title, actual_place, date_first, date_last, description } = req.body;
+  const { title, actual_place, date_first, date_last, description, assets_id } = req.body;
   try {
-    const [result] = await News.createOne({ title, actual_place, date_first, date_last, description });
+    const [result] = await News.createOne({ title, actual_place, date_first, date_last, description, assets_id });
     req.id = result.insertId;
     next();
   } catch (err) {
@@ -49,7 +49,7 @@ const verifyUpdateData = async (req, resp, next) => {
 const updateOneNewsById = async (req, resp, next) => {
   const { id } = req.params;
   // on recupère les champs remplis ou non ds le body
-  const { title, actual_place, date_first, date_last, description } = req.body;
+  const { title, actual_place, date_first, date_last, description, assets_id } = req.body;
   // on crée une const vide pour stocker les valeurs
   const newEvent = {};
   // si title est rempli, stocke le dans newEvent -> {title: xxx}
@@ -68,6 +68,9 @@ const updateOneNewsById = async (req, resp, next) => {
   }
   if (description) {
     newEvent.description = description;
+  }
+  if (assets_id) {
+    newEvent.assets_id = assets_id;
   }
 
   try {

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "create-db-migration": "db-migrate create $NAME --sql-file",
-    "migrate-db": "db-migrate up",
+    "migrate-up": "db-migrate up",
     "down-db": "db-migrate down",
     "reset-db": "db-migrate reset",
     "start": "node src/index.js",

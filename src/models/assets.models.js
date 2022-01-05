@@ -1,6 +1,6 @@
 const { connection } = require("../../db-connection");
 
-class Asset {
+class Assets {
   static findMany() {
     const sql = "SELECT * FROM assets";
     return connection.promise().query(sql);
@@ -21,4 +21,4 @@ class Asset {
     return connection.promise().query(sql, [asset]);
   }
 }
-module.exports = Asset;
+module.exports = Assets;
