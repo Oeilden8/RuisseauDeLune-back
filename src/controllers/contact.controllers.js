@@ -14,7 +14,7 @@ const getOneContactById = async (req, res) => {
   const statusCode = req.method === "POST" ? 201 : 200;
   try {
     const [result] = await Contact.findOneContactById(id);
-    if (result.lengh === 0) {
+    if (result.length === 0) {
       res.status(404).send(`Contact avec l'id ${id} non trouvé`);
     } else {
       res.status(statusCode).json(result[0]);
@@ -63,11 +63,17 @@ const updateOneContactById = async (req, resp, next) => {
 
 const createOneMoreContact = async (req, res, next) => {
   const { firstname_lastname, email, phone, description, assets_id } = req.body;
+  const contactToCreate = { firstname_lastname, email, phone, description };
+  if (assets_id) {
+    contactToCreate.assets_id = assets_id;
+  }
+
   try {
-    const [result] = await Contact.createOneContact({ firstname_lastname, email, phone, description, assets_id });
+    const [result] = await Contact.createOneContact(contactToCreate);
     req.id = result.insertId;
     next();
   } catch (err) {
+    // console.log(err.message);
     res.status(500).send(err.message);
   }
 };
@@ -79,9 +85,10 @@ const deleteOneContact = async (req, res) => {
     if (result.affectedRows === 0) {
       res.status(404).send(`Contact ${id} non trouvé`);
     } else {
-      res.status(200).send(`Contact ${id} supprimé`);
+      res.sendStatus(204);
     }
   } catch (err) {
+    console.log("delete", err.message);
     res.status(500).send(`erreur lors de la suppression du contact : ${err.message}`);
   }
 };

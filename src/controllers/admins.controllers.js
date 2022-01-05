@@ -37,8 +37,9 @@ const validateNewAdminData = async (req, resp, next) => {
 };
 
 const createOneAdmin = async (req, resp, next) => {
+  const { email, password } = req.body;
   try {
-    const [result] = await Admins.createOne(req.body);
+    const [result] = await Admins.createOne({ email, password });
     req.id = result.insertId;
     next();
   } catch (err) {
@@ -59,18 +60,6 @@ const deleteOneAdmin = async (req, resp) => {
     resp.status(500).send(`erreur lors de la suppression de l'admin : ${err.message}`);
   }
 };
-
-// si email est différent de la db -> non valide, si le mdp est différent du password -> non valide
-// const validateLogin = async (req, resp, next) => {
-//   const { email, password } = req.body;
-//   if (await !Admins.emailAlreadyExists) {
-//     resp.status(500).send(`${email} n'est pas valide`);
-//   } else if (await !Admins.verifyPassword(Admins.passwordHashing(password))) {
-//     resp.status(400).send("mot de passe invalide");
-//   } else {
-//     next();
-//   }
-// };
 
 module.exports = {
   getAllAdmins,
