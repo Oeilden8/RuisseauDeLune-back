@@ -31,9 +31,9 @@ class News {
     return connection.promise().query(sql, [news]);
   }
 
-  static updateOne(newEvent) {
-    const sql = "UPDATE news SET ?";
-    return connection.promise().query(sql, [newEvent]);
+  static updateOne(newEvent, id) {
+    const sql = "UPDATE news SET ? WHERE id=?";
+    return connection.promise().query(sql, [newEvent, id]);
   }
 }
 

@@ -22,9 +22,9 @@ class Contact {
     return result.length > 0;
   }
 
-  static updateOneContact(newContact) {
-    const sql = "UPDATE contact SET ?";
-    return connection.promise().query(sql, [newContact]);
+  static updateOneContact(newContact, id) {
+    const sql = "UPDATE contact SET ? WHERE id=?";
+    return connection.promise().query(sql, [newContact, id]);
   }
 
   static findOneContactByName(name) {

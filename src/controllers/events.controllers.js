@@ -30,6 +30,37 @@ const getAllEvents = async (req, resp) => {
   }
 };
 
+const getEventsByType = async (req, resp) => {
+  const { type } = req.params;
+  try {
+    const [results] = await Events.findEventsByType(type);
+    const events = [];
+    // on parcours results pour les réorganiser
+    results.forEach((event) => {
+      // si aucun event parcouru(1ere boucle) ou si l'id de l'event précédent est != de l'event parcouru (c'est pas le meme event)
+      if (events.length === 0 || event.id !== events[events.length - 1].id) {
+        // on recrée un objet avec les propriétés qu'on veut récupérer
+        const eventWithAssets = {
+          id: event.id,
+          type: event.type,
+          title: event.title,
+          places: event.places,
+          description: event.description,
+          assets: [{ source: event.source, type: event.asset_type }],
+        };
+        // on envoie ce nouvel objet dans notre tableau à chaque boucle
+        events.push(eventWithAssets);
+      } else {
+        // si l'event a déjà été parcouru on ajoute l'asset à la propriété asset précédente (le cas ou l'event a plusieurs assets)
+        events[events.length - 1].assets.push({ source: event.source, type: event.asset_type });
+      }
+    });
+    resp.json(events);
+  } catch (err) {
+    resp.status(500).send(err.message);
+  }
+};
+
 const getOneEventById = async (req, resp) => {
   const id = req.params.id ? req.params.id : req.event_id;
   const statusCode = req.method === "POST" ? 201 : 200;
@@ -92,20 +123,6 @@ const deleteOneEvent = async (req, res) => {
   }
 };
 
-const getOneType = async (req, res) => {
-  const { type } = req.params;
-  try {
-    const [result] = await Events.typeChoice(type);
-    if (result.length === 0) {
-      res.status(404).send(`Le type n'existe pas`);
-    } else {
-      res.status(200).json(result[0]);
-    }
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-};
-
 const updateOneEventById = async (req, resp, next) => {
   const { id } = req.params;
   const { type, title, places, description } = req.body;
@@ -135,7 +152,7 @@ module.exports = {
   getOneEventById,
   createOneEvent,
   deleteOneEvent,
-  getOneType,
   updateOneEventById,
   getAssetsByEventId,
+  getEventsByType,
 };

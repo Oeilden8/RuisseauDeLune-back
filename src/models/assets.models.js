@@ -6,6 +6,16 @@ class Assets {
     return connection.promise().query(sql);
   }
 
+  static findManyImages() {
+    const sql = "SELECT * FROM assets WHERE type='image'";
+    return connection.promise().query(sql);
+  }
+
+  static findManyVideos() {
+    const sql = "SELECT * FROM assets WHERE type='video'";
+    return connection.promise().query(sql);
+  }
+
   static findOneAssetById(id) {
     const sql = "SELECT * FROM assets WHERE id=?";
     return connection.promise().query(sql, [id]);

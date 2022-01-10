@@ -9,6 +9,24 @@ const getAllAsset = async (_req, resp) => {
   }
 };
 
+const getAllImages = async (_req, resp) => {
+  try {
+    const [results] = await Assets.findManyImages();
+    resp.json(results);
+  } catch (err) {
+    resp.status(500).send(err.message);
+  }
+};
+
+const getAllVideos = async (_req, resp) => {
+  try {
+    const [results] = await Assets.findManyVideos();
+    resp.json(results);
+  } catch (err) {
+    resp.status(500).send(err.message);
+  }
+};
+
 const getOneAssetById = async (req, resp) => {
   const id = req.params.id ? req.params.id : req.asset_id;
   const statusCode = req.method === "POST" ? 201 : 200;
@@ -55,6 +73,8 @@ const deleteOneAsset = async (req, resp) => {
 
 module.exports = {
   getAllAsset,
+  getAllImages,
+  getAllVideos,
   getOneAssetById,
   createOneAsset,
   deleteOneAsset,

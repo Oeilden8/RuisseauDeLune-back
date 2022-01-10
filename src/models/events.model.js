@@ -34,14 +34,15 @@ class Events {
     return connection.promise().query(sql, [id]);
   }
 
-  static typeChoice(type) {
-    const sql = "SELECT * FROM events WHERE type=?";
+  static findEventsByType(type) {
+    const sql =
+      "SELECT source, e.id, e.type, e.title, e.places, e.description FROM assets AS a INNER JOIN selection_assets AS s ON s.assets_id=a.id INNER JOIN events AS e ON e.id = s.events_id WHERE e.type=? ORDER BY e.id";
     return connection.promise().query(sql, [type]);
   }
 
-  static updateOne(newEvent) {
-    const sql = "UPDATE events SET ?";
-    return connection.promise().query(sql, [newEvent]);
+  static updateOne(newEvent, id) {
+    const sql = "UPDATE events SET ? WHERE id=?";
+    return connection.promise().query(sql, [newEvent, id]);
   }
 
   static findAssetsByEventId(id) {
