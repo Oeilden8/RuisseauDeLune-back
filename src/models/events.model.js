@@ -2,6 +2,7 @@ const { connection } = require("../../db-connection");
 
 class Events {
   static findMany() {
+    // utiliser un innerjoin pour recup les assets avec l'event
     const sql = "SELECT * FROM events";
     return connection.promise().query(sql);
   }
