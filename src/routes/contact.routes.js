@@ -1,14 +1,14 @@
 const contactRouter = require("express").Router();
 
-const { contactControllers } = require("../controllers");
+const { contactControllers, authControllers } = require("../controllers");
 
 contactRouter.get("/", contactControllers.getAllContacts);
 contactRouter.get("/:id", contactControllers.getOneContactById);
 
-contactRouter.put("/:id", contactControllers.updateOneContactById, contactControllers.getOneContactById);
+contactRouter.put("/:id", authControllers.verifyToken, contactControllers.updateOneContactById, contactControllers.getOneContactById);
 
-contactRouter.post("/", contactControllers.createOneMoreContact, contactControllers.getOneContactById);
+contactRouter.post("/", authControllers.verifyToken, contactControllers.createOneMoreContact, contactControllers.getOneContactById);
 
-contactRouter.delete("/:id", contactControllers.deleteOneContact);
+contactRouter.delete("/:id", authControllers.verifyToken, contactControllers.deleteOneContact);
 
 module.exports = contactRouter;

@@ -1,6 +1,13 @@
-const { argon2d } = require("argon2");
+const argon2 = require("argon2");
 const { connection } = require("../../db-connection");
 // connection : les infos pour se connecter a la database
+
+const hashingOptions = {
+  type: argon2.argon2id,
+  memoryCost: 2 ** 16,
+  timeCost: 5,
+  parallelism: 1,
+};
 
 class Admins {
   static findMany() {
@@ -11,6 +18,11 @@ class Admins {
   static findOneAdminById(id) {
     const sql = "SELECT * FROM admins WHERE id=?";
     return connection.promise().query(sql, [id]);
+  }
+
+  static findOneAdminByEmail(email) {
+    const sql = "SELECT * FROM admins WHERE email=?";
+    return connection.promise().query(sql, [email]);
   }
 
   static deleteOnebyId(id) {
@@ -33,14 +45,12 @@ class Admins {
 
   // hash le password via argon2
   static async passwordHashing(password) {
-    const hashedPassword = await argon2d.hash(password);
+    const hashedPassword = await argon2.hash(password, hashingOptions);
     return hashedPassword;
   }
 
-  // verifié le hashing
-  static async verifyPasswordHash(password, hashedPassword) {
-    const valid = await argon2d.verify(hashedPassword, password);
-    return valid;
+  static verifyPasswordHash(hashedPassword, password) {
+    return argon2.verify(hashedPassword, password, hashingOptions);
   }
 
   static createOne(admin) {

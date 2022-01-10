@@ -2,13 +2,19 @@
 const adminsRouter = require("express").Router();
 
 // importe toutes les fonctions présentes dans characters.controller via l'index de controllers
-const { adminsControllers } = require("../controllers");
+const { adminsControllers, authControllers } = require("../controllers");
 
 adminsRouter.get("/", adminsControllers.getAllAdmins);
 adminsRouter.get("/:id", adminsControllers.getOneAdminById);
 
-adminsRouter.post("/", adminsControllers.validateNewAdminData, adminsControllers.createOneAdmin, adminsControllers.getOneAdminById);
+adminsRouter.post(
+  "/",
+  authControllers.verifyToken,
+  adminsControllers.validateNewAdminData,
+  adminsControllers.createOneAdmin,
+  adminsControllers.getOneAdminById,
+);
 
-adminsRouter.delete("/:id", adminsControllers.deleteOneAdmin);
+adminsRouter.delete("/:id", authControllers.verifyToken, adminsControllers.deleteOneAdmin);
 
 module.exports = adminsRouter;

@@ -1,4 +1,5 @@
 const { Asset } = require("../models");
+
 const getAllAsset = async (_req, resp) => {
   try {
     const [results] = await Asset.findMany();
@@ -21,7 +22,7 @@ const getOneAssetById = async (req, resp) => {
     resp.status(500).send(err.message);
   }
 };
-const createOneAsset= async (req, resp, next) => {
+const createOneAsset = async (req, resp, next) => {
   try {
     const [result] = await Asset.createOne(req.body);
     req.id = result.insertId;
