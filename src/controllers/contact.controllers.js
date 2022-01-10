@@ -88,7 +88,7 @@ const deleteOneContact = async (req, res) => {
       res.sendStatus(204);
     }
   } catch (err) {
-    console.log("delete", err.message);
+    // console.log("delete", err.message);
     res.status(500).send(`erreur lors de la suppression du contact : ${err.message}`);
   }
 };

@@ -25,7 +25,7 @@ describe("CONTACT ROUTES", () => {
     const res = await supertest(app).get("/api/contact").expect(200).expect("Content-Type", /json/);
 
     expect(Array.isArray(res.body)).toBe(true);
-    console.log("get", res.body);
+    // console.log("get", res.body);
 
     res.body.forEach((contact) => {
       contactKeys.map((prop) => {
