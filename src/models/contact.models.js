@@ -11,15 +11,20 @@ class Contact {
     return connection.promise().query(sql, [id]);
   }
 
+  static findOneContactWithAssetById(id) {
+    const sql = "SELECT * FROM contact INNER JOIN assets ON contact.assets_id = assets.id WHERE contact.id=?";
+    return connection.promise().query(sql, [id]);
+  }
+
   static async contactAlreadyExists(name) {
     const sql = "SELECT * FROM contact WHERE firstname_lastname=?";
     const [result] = await connection.promise().query(sql, [name]);
     return result.length > 0;
   }
 
-  static updateOneContact(newContact) {
-    const sql = "UPDATE contact SET ?";
-    return connection.promise().query(sql, [newContact]);
+  static updateOneContact(newContact, id) {
+    const sql = "UPDATE contact SET ? WHERE id=?";
+    return connection.promise().query(sql, [newContact, id]);
   }
 
   static findOneContactByName(name) {

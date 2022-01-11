@@ -5,5 +5,5 @@ CREATE TABLE `events`(
     `title` VARCHAR (100) NOT NULL,
     `places` VARCHAR(150),
     `description` TEXT,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
