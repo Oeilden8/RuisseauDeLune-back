@@ -8,5 +8,4 @@ CREATE TABLE `news`(
     `description` TEXT,
     `assets_id` INT,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_assets_id` FOREIGN KEY (`assets_id`) REFERENCES `assets` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
