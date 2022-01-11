@@ -110,13 +110,13 @@ const createOneEvent = async (req, res, next) => {
 };
 
 const deleteOneEvent = async (req, res) => {
-  const { id } = req.params;
+  const event_id = req.params.id;
   try {
-    const [result] = await Events.deleteOneById(id);
+    const [result] = await Events.deleteOneById(event_id);
     if (result.affectedRows === 0) {
-      res.status(404).send(`Évènement avec l'id ${id} non trouvé`);
+      res.status(404).send(`Évènement avec l'event_id ${event_id} non trouvé`);
     } else {
-      res.status(200).send(`Évènement ${id} supprimé`);
+      res.status(200).send(`Évènement ${event_id} supprimé`);
     }
   } catch (err) {
     res.status(500).send(`Erreur lors de la suppression de l'évènement`);

@@ -45,15 +45,12 @@ const createOneLink = async (req, res, next) => {
   }
 };
 
-const deleteOneLink = async (req, res) => {
+const deleteOneLink = async (req, res, next) => {
   const { events_id } = req.params;
   try {
-    const [result] = await SelectionAssets.deleteOneById(events_id);
-    if (result.affectedRows === 0) {
-      res.status(404).send(`Lien intermédiaire avec l'event_id ${events_id} non trouvé`);
-    } else {
-      res.status(200).send(`Lien ${events_id} supprimé`);
-    }
+    await SelectionAssets.deleteOneById(events_id);
+    console.log(events_id);
+    next();
   } catch (err) {
     res.status(500).send(`Erreur lors de la suppression`, err.message);
   }

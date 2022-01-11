@@ -22,6 +22,6 @@ eventsRouter.put(
   eventsControllers.getOneEventById,
 );
 
-eventsRouter.delete("/:id", authControllers.verifyToken, eventsControllers.deleteOneEvent);
+eventsRouter.delete("/:id", authControllers.verifyToken, linkControllers.deleteOneLink, eventsControllers.deleteOneEvent);
 
 module.exports = eventsRouter;
