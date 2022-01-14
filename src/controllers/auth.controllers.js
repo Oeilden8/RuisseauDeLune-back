@@ -5,7 +5,7 @@ const createToken = (req, resp) => {
   const id = req.adminId;
   const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" });
   // on envoie le token dans un cookie nommé userToken, de type token, et protégé par httpOnly (le front ne pourra pas le lire)
-  resp.status(200).cookie("adminToken", token, { httpOnly: true, maxAge: 3600000 }).json({ id });
+  resp.status(200).cookie("adminToken", token, { httpOnly: true, sameSite: "strict", maxAge: 3600000 }).json({ id });
 };
 
 const verifyToken = (req, resp, next) => {
