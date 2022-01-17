@@ -6,5 +6,6 @@ CREATE TABLE `contact`(
     `phone` VARCHAR(10),
     `diplomes` TEXT,
     `assets_id` INT,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_assets_id` FOREIGN KEY (`assets_id`) REFERENCES `assets` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;

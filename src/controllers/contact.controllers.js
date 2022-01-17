@@ -14,8 +14,8 @@ const getOneContactById = async (req, res) => {
   const statusCode = req.method === "POST" ? 201 : 200;
 
   try {
-    const [result] = await Contact.findOneContactById(id);
-    if (result.length === 0) {
+    const [result] = await Contact.findOneContactWithAssetById(id);
+    if (result.lengh === 0) {
       res.status(404).send(`Contact avec l'id ${id} non trouvé`);
     } else {
       res.status(statusCode).json(result[0]);

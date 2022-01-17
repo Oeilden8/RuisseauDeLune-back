@@ -1,15 +1,27 @@
 const eventsRouter = require("express").Router();
 
-const { eventsControllers, authControllers } = require("../controllers");
+const { eventsControllers, authControllers, linkControllers } = require("../controllers");
 
 eventsRouter.get("/", eventsControllers.getAllEvents);
 eventsRouter.get("/:id", eventsControllers.getOneEventById);
-eventsRouter.get("/:type", eventsControllers.getOneType);
+eventsRouter.get("/type/:type", eventsControllers.getEventsByType);
 
-eventsRouter.post("/", authControllers.verifyToken, eventsControllers.createOneEvent, eventsControllers.getOneEventById);
+eventsRouter.post(
+  "/",
+  authControllers.verifyToken,
+  eventsControllers.createOneEvent,
+  linkControllers.createOneLink,
+  eventsControllers.getOneEventById,
+);
 
-eventsRouter.put("/:id", authControllers.verifyToken, eventsControllers.updateOneEventById, eventsControllers.getOneEventById);
+eventsRouter.put(
+  "/:id",
+  authControllers.verifyToken,
+  eventsControllers.updateOneEventById,
+  linkControllers.createOneLink,
+  eventsControllers.getOneEventById,
+);
 
-eventsRouter.delete("/:id", authControllers.verifyToken, eventsControllers.deleteOneEvent);
+eventsRouter.delete("/:id", authControllers.verifyToken, linkControllers.deleteOneLink, eventsControllers.deleteOneEvent);
 
 module.exports = eventsRouter;

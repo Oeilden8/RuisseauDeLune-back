@@ -11,6 +11,11 @@ class News {
     return connection.promise().query(sql, [id]);
   }
 
+  static findOneNewsWithAssetById(id) {
+    const sql = "SELECT * FROM news INNER JOIN assets ON news.assets_id = assets.id WHERE news.id=?";
+    return connection.promise().query(sql, [id]);
+  }
+
   static orderNewsByDate() {
     const sql = "SELECT * FROM news ORDER BY date_first ASC";
     return connection.promise().query(sql);
@@ -26,9 +31,9 @@ class News {
     return connection.promise().query(sql, [news]);
   }
 
-  static updateOne(newEvent) {
-    const sql = "UPDATE news SET ?";
-    return connection.promise().query(sql, [newEvent]);
+  static updateOne(newEvent, id) {
+    const sql = "UPDATE news SET ? WHERE id=?";
+    return connection.promise().query(sql, [newEvent, id]);
   }
 }
 

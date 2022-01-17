@@ -1,8 +1,18 @@
 const { connection } = require("../../db-connection");
 
-class Asset {
+class Assets {
   static findMany() {
     const sql = "SELECT * FROM assets";
+    return connection.promise().query(sql);
+  }
+
+  static findManyImages() {
+    const sql = "SELECT * FROM assets WHERE type='image'";
+    return connection.promise().query(sql);
+  }
+
+  static findManyVideos() {
+    const sql = "SELECT * FROM assets WHERE type='video'";
     return connection.promise().query(sql);
   }
 
@@ -21,4 +31,4 @@ class Asset {
     return connection.promise().query(sql, [asset]);
   }
 }
-module.exports = Asset;
+module.exports = Assets;
