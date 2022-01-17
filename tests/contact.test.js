@@ -5,12 +5,12 @@ const app = require("../src/app");
 const { query } = require("../db-connection");
 
 // Créer un tableau de chaînes de caractères, permettra de vérifier les propriétés de nos contacts
-const contactKeys = ["id", "firstname_lastname", "email", "phone"];
+const contactKeys = ["id", "firstname_lastname", "presentation", "phone"];
 
 // Cet objet permettra de créer un contact dans notre base de données
 const contactToCreate = {
   firstname_lastname: "First Contact",
-  email: "test@gmail.com",
+  presentation: "test@gmail.com",
   phone: "123456",
 };
 
@@ -51,6 +51,19 @@ describe("CONTACT ROUTES", () => {
     contactKeys.map((prop) => {
       expect(res.body).toHaveProperty(prop);
     });
+  });
+
+  it(`should update the created contact email 🧪 /api/contact/`, async () => {
+    await supertest(app)
+      .put(`/api/contact/${persistentDatas.createdContact.id}`)
+      .send({
+        presentation: "UpdateTest@gmail.com",
+      })
+      .expect(200);
+
+    const res = await supertest(app).get(`/api/contact/${persistentDatas.createdContact.id}`);
+
+    expect(res.body).toHaveProperty("presentation", "UpdateTest@gmail.com");
   });
 
   // Permet de tester la route de type DELETE sur un contact ciblé par son id
