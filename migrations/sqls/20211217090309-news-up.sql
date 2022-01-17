@@ -7,5 +7,5 @@ CREATE TABLE `news`(
     `date_last` DATE,
     `description` TEXT,
     `assets_id` INT,
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
