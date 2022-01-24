@@ -18,7 +18,7 @@ class Contact {
     return connection.promise().query(sql, [id]);
   }
 
-  static async contactAlreadyExists(name) {
+  static async contactAlreadyExists(firstname_lastname) {
     const sql = "SELECT * FROM contact WHERE firstname_lastname=?";
     const [result] = await connection.promise().query(sql, [firstname_lastname]);
     return result.length > 0;
