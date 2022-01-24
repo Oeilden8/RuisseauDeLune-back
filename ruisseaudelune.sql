@@ -136,7 +136,7 @@ CREATE TABLE `migrations` (
   `name` varchar(255) NOT NULL,
   `run_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +145,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'/20211207134258-admins','2022-01-24 11:24:40'),(2,'/20211215092543-assets','2022-01-24 11:24:40'),(3,'/20211215093112-events','2022-01-24 11:24:40'),(4,'/20211215095824-selection-assets','2022-01-24 11:24:40'),(5,'/20211215100047-contact','2022-01-24 11:24:40'),(6,'/20211215110516-teamAdmin','2022-01-24 11:24:40'),(7,'/20211217090309-news','2022-01-24 11:24:40'),(8,'/20220124095102-add-assetsInsertions','2022-01-24 11:25:01'),(9,'/20220124095328-add-eventsInsertions','2022-01-24 11:26:21'),(10,'/20220124095507-add-newsInsertions','2022-01-24 11:35:44'),(11,'/20220124095606-add-contactInsertions','2022-01-24 11:35:44');
+INSERT INTO `migrations` VALUES (1,'/20211207134258-admins','2022-01-24 11:24:40'),(2,'/20211215092543-assets','2022-01-24 11:24:40'),(3,'/20211215093112-events','2022-01-24 11:24:40'),(4,'/20211215095824-selection-assets','2022-01-24 11:24:40'),(5,'/20211215100047-contact','2022-01-24 11:24:40'),(6,'/20211215110516-teamAdmin','2022-01-24 11:24:40'),(7,'/20211217090309-news','2022-01-24 11:24:40'),(8,'/20220124095102-add-assetsInsertions','2022-01-24 11:25:01'),(9,'/20220124095328-add-eventsInsertions','2022-01-24 11:26:21'),(10,'/20220124095507-add-newsInsertions','2022-01-24 11:35:44'),(11,'/20220124095606-add-contactInsertions','2022-01-24 11:35:44'),(12,'/20220124132940-add-selections-assets','2022-01-24 14:47:13');
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +190,7 @@ CREATE TABLE `selection_assets` (
   `assets_id` int NOT NULL,
   `events_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,6 +199,7 @@ CREATE TABLE `selection_assets` (
 
 LOCK TABLES `selection_assets` WRITE;
 /*!40000 ALTER TABLE `selection_assets` DISABLE KEYS */;
+INSERT INTO `selection_assets` VALUES (1,7,3),(2,8,2),(3,13,1),(4,15,3);
 /*!40000 ALTER TABLE `selection_assets` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -211,4 +212,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-24 12:22:14
+-- Dump completed on 2022-01-24 14:47:59
