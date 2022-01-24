@@ -1,3 +1,3 @@
 /* Replace with your SQL commands */
 
-TRUNCATE TABLE `assets`;
+TRUNCATE TABLE 'news';
