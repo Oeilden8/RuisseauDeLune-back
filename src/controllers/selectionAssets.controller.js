@@ -27,18 +27,20 @@ const getOneLinkById = async (req, res, next) => {
 
 const createOneLink = async (req, res, next) => {
   // recupère l'id de l'asset choisi via le front qui l'enverra ds le body ou recupère l'id de l'asset nouvellement créé
-  const asset_id = req.body ? req.body : req.asset_id;
+  const assets_id = req.body ? req.body.assets_id : req.assets_id;
   // recupère l'id de l'event precedemment créé
-  const { event_id } = req;
+  const { events_id } = req;
+  console.log(assets_id, events_id);
 
-  if (asset_id && event_id) {
+  if (assets_id && events_id) {
     try {
-      await SelectionAssets.createOne({ asset_id, event_id });
+      await SelectionAssets.createOne({ assets_id, events_id });
       next();
     } catch (err) {
+      console.log(err.message);
       res.status(500).send(err.message);
     }
-  } else if (event_id) {
+  } else if (events_id && !assets_id) {
     next();
   } else {
     res.status(404).send("erreur en récupérant les id");

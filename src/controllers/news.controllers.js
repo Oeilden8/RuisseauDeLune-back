@@ -25,9 +25,9 @@ const getOneNewsById = async (req, resp) => {
 };
 
 const createOneNews = async (req, resp, next) => {
-  const { title, actual_place, date_first, date_last, description, assets_id } = req.body;
+  const { title, places, date_first, date_last, description, assets_id } = req.body;
   try {
-    const [result] = await News.createOne({ title, actual_place, date_first, date_last, description, assets_id });
+    const [result] = await News.createOne({ title, places, date_first, date_last, description, assets_id });
     req.id = result.insertId;
     next();
   } catch (err) {
@@ -49,7 +49,7 @@ const verifyUpdateData = async (req, resp, next) => {
 const updateOneNewsById = async (req, resp, next) => {
   const { id } = req.params;
   // on recupère les champs remplis ou non ds le body
-  const { title, actual_place, date_first, date_last, description, assets_id } = req.body;
+  const { title, places, date_first, date_last, description, assets_id } = req.body;
   // on crée une const vide pour stocker les valeurs
   const newEvent = {};
   // si title est rempli, stocke le dans newEvent -> {title: xxx}
@@ -57,8 +57,8 @@ const updateOneNewsById = async (req, resp, next) => {
     newEvent.title = title;
   }
   // si actual_place est rempli... etc
-  if (actual_place) {
-    newEvent.actual_place = actual_place;
+  if (places) {
+    newEvent.places = places;
   }
   if (date_first) {
     newEvent.date_first = date_first;
