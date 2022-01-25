@@ -11,7 +11,7 @@ const hashingOptions = {
 
 class Admins {
   static findMany() {
-    const sql = "SELECT * FROM admins";
+    const sql = "SELECT id, email FROM admins";
     return connection.promise().query(sql);
   }
 

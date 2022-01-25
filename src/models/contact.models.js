@@ -2,7 +2,8 @@ const { connection } = require("../../db-connection");
 
 class Contact {
   static findManyContact() {
-    const sql = "SELECT * FROM contact";
+    const sql =
+      "SELECT c.id, c.firstname_lastname, c.presentation, c.phone, c.diplomes, a.source, a.type, a.asset_name FROM contact AS c LEFT JOIN assets AS a ON c.assets_id = a.id";
     return connection.promise().query(sql);
   }
 
