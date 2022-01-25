@@ -9,7 +9,7 @@ adminsRouter.get("/:id", adminsControllers.getOneAdminById);
 
 adminsRouter.post(
   "/",
-  authControllers.verifyToken,
+  // authControllers.verifyToken,
   adminsControllers.validateNewAdminData,
   adminsControllers.createOneAdmin,
   adminsControllers.getOneAdminById,
