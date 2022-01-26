@@ -102,14 +102,18 @@ const getAssetsByEventId = async (req, resp) => {
 const createOneEvent = async (req, res, next) => {
   const { type, title, places, description } = req.body;
   console.log(req.body);
-  try {
-    const [result] = await Events.createOne({ type, title, places, description });
-    req.events_id = result.insertId;
-    console.log(req.events_id);
-    next();
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send(err.message);
+  if (type) {
+    try {
+      const [result] = await Events.createOne({ type, title, places, description });
+      req.events_id = result.insertId;
+      console.log(req.events_id);
+      next();
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).send(err.message);
+    }
+  } else {
+    res.status(500).send("Le type d'évènement est manquant");
   }
 };
 

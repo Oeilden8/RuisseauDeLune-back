@@ -18,7 +18,7 @@ class News {
 
   static orderNewsByDate() {
     const sql =
-      "SELECT n.title, n.places, n.date_first, n.date_last, n.description, a.source, a.type, a.asset_name FROM news AS n LEFT JOIN assets AS a ON n.assets_id = a.id ORDER BY date_first ASC";
+      "SELECT n.id, n.title, n.places, n.date_first, n.date_last, n.description, n.assets_id, a.source, a.type, a.asset_name FROM news AS n LEFT JOIN assets AS a ON n.assets_id = a.id ORDER BY date_first ASC";
     return connection.promise().query(sql);
   }
 
