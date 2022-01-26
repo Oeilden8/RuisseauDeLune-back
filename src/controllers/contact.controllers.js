@@ -60,7 +60,7 @@ const updateOneContactById = async (req, resp, next) => {
     }
 
     try {
-      const [result] = await Contact.updateOneContact(newContact, id);
+      await Contact.updateOneContact(newContact, id);
       next();
     } catch (err) {
       resp.status(500).send(err.message);

@@ -28,7 +28,7 @@ const getAllVideos = async (_req, resp) => {
 };
 
 const getOneAssetById = async (req, resp) => {
-  const id = req.params.id ? req.params.id : req.asset_id;
+  const id = req.params.id ? req.params.id : req.assets_id;
   const statusCode = req.method === "POST" ? 201 : 200;
   try {
     const [result] = await Assets.findOneAssetById(id);

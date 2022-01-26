@@ -15,6 +15,8 @@ app.use(
   }),
 );
 
+app.use("/public", express.static("public"));
+
 app.get("/", (req, res) => {
   res.status(200).json({ foo: "hello" });
 });

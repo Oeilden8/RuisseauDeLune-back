@@ -62,7 +62,7 @@ const getEventsByType = async (req, resp) => {
 };
 
 const getOneEventById = async (req, resp) => {
-  const id = req.params.id ? req.params.id : req.event_id;
+  const id = req.params.id ? req.params.id : req.events_id;
   const statusCode = req.method === "POST" ? 201 : 200;
 
   let eventsResult;
@@ -100,23 +100,27 @@ const getAssetsByEventId = async (req, resp) => {
 };
 
 const createOneEvent = async (req, res, next) => {
+  const { type, title, places, description } = req.body;
+  console.log(req.body);
   try {
-    const [result] = await Events.createOne(req.body);
-    req.event_id = result.insertId;
+    const [result] = await Events.createOne({ type, title, places, description });
+    req.events_id = result.insertId;
+    console.log(req.events_id);
     next();
   } catch (err) {
+    console.log(err.message);
     res.status(500).send(err.message);
   }
 };
 
 const deleteOneEvent = async (req, res) => {
-  const event_id = req.params.id;
+  const events_id = req.params.id;
   try {
-    const [result] = await Events.deleteOneById(event_id);
+    const [result] = await Events.deleteOneById(events_id);
     if (result.affectedRows === 0) {
-      res.status(404).send(`Évènement avec l'event_id ${event_id} non trouvé`);
+      res.status(404).send(`Évènement avec l'event_id ${events_id} non trouvé`);
     } else {
-      res.status(200).send(`Évènement ${event_id} supprimé`);
+      res.status(200).send(`Évènement ${events_id} supprimé`);
     }
   } catch (err) {
     res.status(500).send(`Erreur lors de la suppression de l'évènement`);
