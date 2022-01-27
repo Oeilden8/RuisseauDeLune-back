@@ -14,13 +14,7 @@ eventsRouter.post(
   eventsControllers.getOneEventById,
 );
 
-eventsRouter.put(
-  "/:id",
-  authControllers.verifyToken,
-  eventsControllers.updateOneEventById,
-  linkControllers.createOneLink,
-  eventsControllers.getOneEventById,
-);
+eventsRouter.put("/:id", authControllers.verifyToken, eventsControllers.updateOneEventById, eventsControllers.getOneEventById);
 
 eventsRouter.delete("/:id", authControllers.verifyToken, linkControllers.deleteOneLink, eventsControllers.deleteOneEvent);
 
