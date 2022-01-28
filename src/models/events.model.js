@@ -9,7 +9,7 @@ class Events {
   static findManyWithAssets() {
     // selectionne la source et les champs de la table events via jointure de la table intermédiaire avec events et assets ou les assets sont des images et on trie par event id
     const sql =
-      "SELECT source, a.type AS asset_type, e.id, e.type, e.title, e.places, e.description FROM assets AS a INNER JOIN selection_assets AS s ON s.assets_id=a.id INNER JOIN events AS e ON e.id = s.events_id ORDER BY e.id";
+      "SELECT source, a.type AS asset_type, e.id, e.type, e.title, e.places, e.description FROM assets AS a RIGHT JOIN selection_assets AS s ON s.assets_id=a.id RIGHT JOIN events AS e ON e.id = s.events_id ORDER BY e.id";
     return connection.promise().query(sql);
   }
 
@@ -36,7 +36,7 @@ class Events {
 
   static findEventsByType(type) {
     const sql =
-      "SELECT source, e.id, e.type, e.title, e.places, e.description FROM assets AS a INNER JOIN selection_assets AS s ON s.assets_id=a.id INNER JOIN events AS e ON e.id = s.events_id WHERE e.type=? ORDER BY e.id";
+      "SELECT source, e.id, e.type, e.title, e.places, e.description FROM assets AS a RIGHT JOIN selection_assets AS s ON s.assets_id=a.id RIGHT JOIN events AS e ON e.id = s.events_id WHERE e.type=? ORDER BY e.id";
     return connection.promise().query(sql, [type]);
   }
 

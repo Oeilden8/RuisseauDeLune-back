@@ -1,4 +1,5 @@
 const { Assets } = require("../models");
+const multer = require("multer");
 
 const getAllAsset = async (_req, resp) => {
   try {
@@ -42,11 +43,44 @@ const getOneAssetById = async (req, resp) => {
   }
 };
 
+const uploadOneAsset = async (req, resp, next) => {
+  const assetStorage = multer.diskStorage({
+    // type: (_, asset, cb) => {
+    //   cb(null, `${asset.originaltype}`);
+    //   console.log({ type: req.asset });
+    // },
+    destination: (req, asset, cb) => {
+      // notre dossier ou on stocke les assets -> pouvoir le choisir par type
+      cb(null, "public/assets");
+    },
+    filename: (_, asset, cb) => {
+      cb(null, `${asset.originalname}`);
+    },
+  });
+
+  // on configure multer pour qu'il sauvegarde bien un seul fichier
+  const upload = multer({ storage: assetStorage }).single("asset");
+  upload(req, resp, (err) => {
+    if (err) {
+      resp.status(500).json(err);
+    } else {
+      resp.status(201).json({ filename: req.asset });
+    }
+  });
+  next();
+};
+
 const createOneAsset = async (req, resp, next) => {
-  const { source, type } = req.body;
+  let { source, type, name } = req.body;
+  // recuperer les bonnes infos?
+  if (req.asset.filename) {
+    name = req.asset.filename;
+    type = req.asset.type;
+    source = req.asset.destination;
+  }
   if (type === "image" || type === "video") {
     try {
-      const [result] = await Assets.createOne({ source, type });
+      const [result] = await Assets.createOne({ source, type, name });
       req.asset_id = result.insertId;
       next();
     } catch (err) {
@@ -76,6 +110,7 @@ module.exports = {
   getAllImages,
   getAllVideos,
   getOneAssetById,
+  uploadOneAsset,
   createOneAsset,
   deleteOneAsset,
 };
