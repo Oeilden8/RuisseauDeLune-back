@@ -1,5 +1,5 @@
-const { Assets } = require("../models");
 const multer = require("multer");
+const { Assets } = require("../models");
 
 const getAllAsset = async (_req, resp) => {
   try {
@@ -29,7 +29,7 @@ const getAllVideos = async (_req, resp) => {
 };
 
 const getOneAssetById = async (req, resp) => {
-  const id = req.params.id ? req.params.id : req.assets_id;
+  const id = req.params.id ? req.params.id : req.asset_id;
   const statusCode = req.method === "POST" ? 201 : 200;
   try {
     const [result] = await Assets.findOneAssetById(id);
@@ -44,14 +44,11 @@ const getOneAssetById = async (req, resp) => {
 };
 
 const uploadOneAsset = async (req, resp, next) => {
+  const { type } = req.query;
   const assetStorage = multer.diskStorage({
-    // type: (_, asset, cb) => {
-    //   cb(null, `${asset.originaltype}`);
-    //   console.log({ type: req.asset });
-    // },
-    destination: (req, asset, cb) => {
+    destination: (_req, asset, cb) => {
       // notre dossier ou on stocke les assets -> pouvoir le choisir par type
-      cb(null, "public/assets");
+      cb(null, `public/assets/${type}`);
     },
     filename: (_, asset, cb) => {
       cb(null, `${asset.originalname}`);
@@ -64,23 +61,24 @@ const uploadOneAsset = async (req, resp, next) => {
     if (err) {
       resp.status(500).json(err);
     } else {
-      resp.status(201).json({ filename: req.asset });
+      console.log(req.file);
+      next();
     }
   });
-  next();
 };
 
 const createOneAsset = async (req, resp, next) => {
-  let { source, type, name } = req.body;
-  // recuperer les bonnes infos?
-  if (req.asset.filename) {
-    name = req.asset.filename;
-    type = req.asset.type;
-    source = req.asset.destination;
-  }
+  let { type } = req.query;
+  type = type === "images" ? "image" : "video";
+
+  const newAsset = {
+    asset_name: req.file.filename,
+    type,
+    source: type === "image" ? `public/assets/images/${req.file.filename}` : `public/assets/videos/${req.file.filename}`,
+  };
   if (type === "image" || type === "video") {
     try {
-      const [result] = await Assets.createOne({ source, type, name });
+      const [result] = await Assets.createOne(newAsset);
       req.asset_id = result.insertId;
       next();
     } catch (err) {

@@ -36,7 +36,7 @@ class Events {
 
   static findEventsByType(type) {
     const sql =
-      "SELECT source, e.id, e.type, e.title, e.places, e.description FROM assets AS a RIGHT JOIN selection_assets AS s ON s.assets_id=a.id RIGHT JOIN events AS e ON e.id = s.events_id WHERE e.type=? ORDER BY e.id";
+      "SELECT a.source, a.type AS asset_type, e.id, e.type, e.title, e.places, e.description FROM assets AS a RIGHT JOIN selection_assets AS s ON s.assets_id=a.id RIGHT JOIN events AS e ON e.id = s.events_id WHERE e.type=? ORDER BY e.id";
     return connection.promise().query(sql, [type]);
   }
 
