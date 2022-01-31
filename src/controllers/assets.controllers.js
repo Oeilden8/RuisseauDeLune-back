@@ -1,3 +1,4 @@
+const multer = require("multer");
 const { Assets } = require("../models");
 
 const getAllAsset = async (_req, resp) => {
@@ -28,7 +29,7 @@ const getAllVideos = async (_req, resp) => {
 };
 
 const getOneAssetById = async (req, resp) => {
-  const id = req.params.id ? req.params.id : req.assets_id;
+  const id = req.params.id ? req.params.id : req.asset_id;
   const statusCode = req.method === "POST" ? 201 : 200;
   try {
     const [result] = await Assets.findOneAssetById(id);
@@ -42,11 +43,42 @@ const getOneAssetById = async (req, resp) => {
   }
 };
 
+const uploadOneAsset = async (req, resp, next) => {
+  const { type } = req.query;
+  const assetStorage = multer.diskStorage({
+    destination: (_req, asset, cb) => {
+      // notre dossier ou on stocke les assets -> pouvoir le choisir par type
+      cb(null, `public/assets/${type}`);
+    },
+    filename: (_, asset, cb) => {
+      cb(null, `${asset.originalname}`);
+    },
+  });
+
+  // on configure multer pour qu'il sauvegarde bien un seul fichier
+  const upload = multer({ storage: assetStorage }).single("asset");
+  upload(req, resp, (err) => {
+    if (err) {
+      resp.status(500).json(err);
+    } else {
+      console.log(req.file);
+      next();
+    }
+  });
+};
+
 const createOneAsset = async (req, resp, next) => {
-  const { source, type } = req.body;
+  let { type } = req.query;
+  type = type === "images" ? "image" : "video";
+
+  const newAsset = {
+    asset_name: req.file.filename,
+    type,
+    source: type === "image" ? `public/assets/images/${req.file.filename}` : `public/assets/videos/${req.file.filename}`,
+  };
   if (type === "image" || type === "video") {
     try {
-      const [result] = await Assets.createOne({ source, type });
+      const [result] = await Assets.createOne(newAsset);
       req.asset_id = result.insertId;
       next();
     } catch (err) {
@@ -76,6 +108,7 @@ module.exports = {
   getAllImages,
   getAllVideos,
   getOneAssetById,
+  uploadOneAsset,
   createOneAsset,
   deleteOneAsset,
 };
