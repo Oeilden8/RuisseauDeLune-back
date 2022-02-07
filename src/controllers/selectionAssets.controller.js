@@ -30,14 +30,14 @@ const createOneLink = async (req, res, next) => {
   const assets_id = req.body ? req.body.assets_id : req.assets_id;
   // recupère l'id de l'event precedemment créé
   const { events_id } = req;
-  console.log(assets_id, events_id);
+  // console.log(assets_id, events_id);
 
   if (assets_id && events_id) {
     try {
       await SelectionAssets.createOne({ assets_id, events_id });
       next();
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
       res.status(500).send(err.message);
     }
   } else if (events_id && !assets_id) {
@@ -51,7 +51,7 @@ const deleteOneLink = async (req, res, next) => {
   const { events_id } = req.params;
   try {
     await SelectionAssets.deleteOneById(events_id);
-    console.log(events_id);
+    // console.log(events_id);
     next();
   } catch (err) {
     res.status(500).send(`Erreur lors de la suppression`, err.message);
