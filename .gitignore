@@ -34,4 +34,6 @@ npm-debug.log
 .env
 pnpm-lock.yaml
 
-videos
+public/assets/videos/clip.mp4
+
+ruisseaudelune.sql
