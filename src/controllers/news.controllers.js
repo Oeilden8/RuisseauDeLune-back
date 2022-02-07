@@ -25,9 +25,9 @@ const getOneNewsById = async (req, resp) => {
 };
 
 const createOneNews = async (req, resp, next) => {
-  const { title, places, date_first, date_last, description, assets_id } = req.body;
+  const news = req.body;
   try {
-    const [result] = await News.createOne({ title, places, date_first, date_last, description, assets_id });
+    const [result] = await News.createOne(news);
     req.id = result.insertId;
     next();
   } catch (err) {
