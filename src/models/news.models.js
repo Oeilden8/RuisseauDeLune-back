@@ -12,13 +12,13 @@ class News {
   }
 
   static findOneNewsWithAssetById(id) {
-    const sql = "SELECT * FROM news INNER JOIN assets ON news.assets_id = assets.id WHERE news.id=?";
+    const sql = "SELECT * FROM news LEFT JOIN assets ON news.assets_id = assets.id WHERE news.id=?";
     return connection.promise().query(sql, [id]);
   }
 
   static orderNewsByDate() {
     const sql =
-      "SELECT n.id, n.title, n.places, n.date_first, n.date_last, n.description, n.assets_id, a.source, a.type, a.asset_name FROM news AS n LEFT JOIN assets AS a ON n.assets_id = a.id ORDER BY date_first ASC";
+      "SELECT n.id, n.title, n.places, n.date_first, n.date_last, n.description, n.assets_id, a.source, a.type, a.asset_name FROM news AS n LEFT JOIN assets AS a ON n.assets_id = a.id ORDER BY date_first DESC";
     return connection.promise().query(sql);
   }
 
