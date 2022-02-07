@@ -69,13 +69,13 @@ const getOneEventById = async (req, resp) => {
   let assetsResult;
   try {
     [eventsResult] = await Events.findOneEventById(id);
-    console.log(eventsResult);
+    // console.log(eventsResult);
   } catch (err) {
     resp.status(500).send(err.message);
   }
   try {
     [assetsResult] = await Events.findAssetsByEventId(id);
-    console.log(assetsResult);
+    // console.log(assetsResult);
   } catch (err) {
     resp.status(500).send(err.message);
   }
@@ -101,15 +101,15 @@ const getAssetsByEventId = async (req, resp) => {
 
 const createOneEvent = async (req, res, next) => {
   const { type, title, places, description } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   if (type) {
     try {
       const [result] = await Events.createOne({ type, title, places, description });
       req.events_id = result.insertId;
-      console.log(req.events_id);
+      // console.log(req.events_id);
       next();
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
       res.status(500).send(err.message);
     }
   } else {

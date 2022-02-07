@@ -37,12 +37,12 @@ const validateNewAdminData = async (req, resp, next) => {
 
 const createOneAdmin = async (req, resp, next) => {
   const { email, password } = req.body;
-  console.log(email, password);
+  // console.log(email, password);
   try {
     const hashedPassword = await Admins.passwordHashing(password);
-    console.log(hashedPassword);
+    // console.log(hashedPassword);
     const [result] = await Admins.createOne({ email, hashedPassword });
-    console.log(result);
+    // console.log(result);
     req.id = result.insertId;
     next();
   } catch (err) {
